@@ -79,6 +79,17 @@ class CitationGuardTest {
     }
 
     @Test
+    @DisplayName("an invalid citation on a sentence that needs none is dropped without a space before the punctuation")
+    void invalidCitationNeedsNothing() {
+        CitationResult r = GUARD.check("Não encontrei prêmio em 2024 [7].", SOURCES, "Ele ganhou algum prêmio em 2024?");
+        assertEquals(0, r.removed());
+        assertEquals(List.of(Outcome.KEPT), outcomes(r));
+        assertEquals("Não encontrei prêmio em 2024.", r.text(), "the citation goes and no space is left behind");
+        assertEquals(List.of(), r.sentences().get(0).cites());
+        assertTrue(r.changed());
+    }
+
+    @Test
     @DisplayName("a detail in no received source: the sentence is removed, and an empty answer is flagged")
     void removed() {
         CitationResult r = GUARD.check("Marcus trabalhou na Microsoft [1].", SOURCES);
