@@ -10,6 +10,9 @@ import org.springframework.ai.tool.ToolCallback;
  * they confirm, {@link #run()} runs the original tool once, with the arguments the policy accepted and the tool
  * context of the call that proposed it.
  *
+ * <p>It holds the tool context until it runs, so a held call kept for long (in a session, for example) keeps the
+ * context's objects alive with it, request-scoped ones included.
+ *
  * <p>Thread-safe: a second {@code run()} throws, even from another thread.
  */
 public final class HeldCall {
